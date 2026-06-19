@@ -82,4 +82,25 @@
 
     </joint>
 
+    <link name="wrist_link">
+        <visual>
+            <origin xyz="-0.4095 0.0 -0.291" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://scara_description/meshes/wrist_link.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="grey">
+                <color rgba="0.8 0.8 0.8 1.0"/>
+            </material>
+        </visual>
+    </link>
+
+    <joint name="wrist_joint" type="revolute">
+        <origin xyz="0.1365 0.0 -0.06" rpy="0.0 0.0 0.0"/>
+        <parent link="forearm_link"/>
+        <child link="wrist_link"/>
+        <axis xyz="0 0 1"/>
+        <limit lower="-2.0" upper="2.0" effort="10.0" velocity="1.5" />
+
+    </joint>
+
 </robot>
