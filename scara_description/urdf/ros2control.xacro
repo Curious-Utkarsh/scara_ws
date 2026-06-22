@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="scara">
+
+<xacro:property name="PI" value="3.14159265359"/>
+
+<ros2_control name="RobotSystem" type="system">
+
+```
+<!-- ROS2 Humble + Ignition Fortress -->
+<xacro:if value="$(arg is_ignition)">
+  <hardware>
+    <plugin>ign_ros2_control/IgnitionSystem</plugin>
+  </hardware>
+</xacro:if>
+
+<!-- ROS2 Iron+ + Gazebo Garden/Harmonic -->
+<xacro:unless value="$(arg is_ignition)">
+  <hardware>
+    <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+  </hardware>
+</xacro:unless>
+
+<!-- Base Rotation -->
+<joint name="column_joint">
+  <command_interface name="position">
+    <param name="min">-2.0</param>
+    <param name="max">2.0</param>
+  </command_interface>
+
+  <state_interface name="position"/>
+  <state_interface name="velocity"/>
+</joint>
+
+<!-- Vertical Slide -->
+<joint name="shoulder_joint">
+  <command_interface name="position">
+    <param name="min">-0.15</param>
+    <param name="max">0.0</param>
+  </command_interface>
+
+  <state_interface name="position"/>
+  <state_interface name="velocity"/>
+</joint>
+
+<!-- Forearm Rotation -->
+<joint name="forearm_joint">
+  <command_interface name="position">
+    <param name="min">-2.0</param>
+    <param name="max">2.0</param>
+  </command_interface>
+
+  <state_interface name="position"/>
+  <state_interface name="velocity"/>
+</joint>
+
+<!-- Wrist Rotation -->
+<joint name="wrist_joint">
+  <command_interface name="position">
+    <param name="min">-2.0</param>
+    <param name="max">2.0</param>
+  </command_interface>
+
+  <state_interface name="position"/>
+  <state_interface name="velocity"/>
+</joint>
+
+<!-- Master Gripper Joint -->
+<joint name="left_finger_joint">
+  <command_interface name="position">
+    <param name="min">-0.02</param>
+    <param name="max">0.0</param>
+  </command_interface>
+
+  <state_interface name="position"/>
+  <state_interface name="velocity"/>
+</joint>
+
+<!-- Mimic Joint (No Command Interface) -->
+<joint name="right_finger_joint">
+
+  <param name="mimic">left_finger_joint</param>
+  <param name="multiplier">1.0</param>
+
+  <state_interface name="position"/>
+  <state_interface name="velocity"/>
+</joint>
+```
+
+</ros2_control>
+
+</robot>

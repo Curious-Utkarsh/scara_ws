@@ -5,5 +5,7 @@
     <xacro:arg name="is_sim" default="true"/>
 
     <xacro:include filename="$(find scara_description)/urdf/arm.xacro" />
+    <xacro:include filename="$(find scara_description)/urdf/gazebo.xacro" />
+    <xacro:include filename="$(find scara_description)/urdf/ros2control.xacro" />
     
 </robot>
