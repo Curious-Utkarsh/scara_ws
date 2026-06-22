@@ -58,7 +58,7 @@
         <parent link="column_link"/>
         <child link="shoulder_link"/>
         <axis xyz="0 0 1"/>
-        <limit effort="100.0" velocity="0.5" lower="0.0" upper="-0.21"/>
+        <limit effort="100.0" velocity="0.5" lower="0.0" upper="-0.15"/>
     </joint>
 
     <link name="forearm_link">
@@ -100,6 +100,48 @@
         <child link="wrist_link"/>
         <axis xyz="0 0 1"/>
         <limit lower="-2.0" upper="2.0" effort="10.0" velocity="1.5" />
+
+    </joint>
+
+    <link name="left_finger_link">
+        <visual>
+            <origin xyz="-0.409 -0.0626 -0.2775" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://scara_description/meshes/left_finger_link.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="grey">
+                <color rgba="0.8 0.8 0.8 1.0"/>
+            </material>
+        </visual>
+    </link>
+
+    <joint name="left_finger_joint" type="prismatic">
+        <origin xyz="0.0 0.064 -0.0135" rpy="0.0 0.0 0.0"/>
+        <parent link="wrist_link"/>
+        <child link="left_finger_link"/>
+        <axis xyz="0 1 0"/>
+        <limit effort="100.0" velocity="0.5" lower="0.0" upper="-0.02"/>
+
+    </joint>
+
+    <link name="right_finger_link">
+        <visual>
+            <origin xyz="-0.409 0.0626 -0.2775" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://scara_description/meshes/right_finger_link.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="grey">
+                <color rgba="0.8 0.8 0.8 1.0"/>
+            </material>
+        </visual>
+    </link>
+
+    <joint name="right_finger_joint" type="prismatic">
+        <origin xyz="0.0 -0.064 -0.0135" rpy="0.0 0.0 0.0"/>
+        <parent link="wrist_link"/>
+        <child link="right_finger_link"/>
+        <axis xyz="0 -1 0"/>
+        <limit effort="100.0" velocity="0.5" lower="0.0" upper="-0.02"/>
 
     </joint>
 
