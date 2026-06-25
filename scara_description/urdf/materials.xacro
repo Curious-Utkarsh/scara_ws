@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="scara">
+
+    <material name="scara_charcoal">
+        <color rgba="0.18 0.20 0.22 1.0"/>
+    </material>
+
+    <material name="scara_dark_blue">
+        <color rgba="0.08 0.28 0.55 1.0"/>
+    </material>
+
+    <material name="scara_mid_blue">
+        <color rgba="0.12 0.45 0.80 1.0"/>
+    </material>
+
+    <material name="scara_orange">
+        <color rgba="0.95 0.50 0.05 1.0"/>
+    </material>
+
+    <material name="scara_light_grey">
+        <color rgba="0.75 0.77 0.80 1.0"/>
+    </material>
+
+    <!-- ═══════════════════════════════════════════════
+         GAZEBO MATERIALS  (<gazebo reference="...">)
+         Uses Gazebo built-in Gazebo/* material names
+         which map to Ogre materials with real shading.
+    ═══════════════════════════════════════════════ -->
+
+    <!-- base_link  — charcoal / near-black -->
+    <gazebo reference="base_link">
+        <material>Gazebo/Blue</material>
+        <mu1>0.9</mu1>
+        <mu2>0.9</mu2>
+    </gazebo>
+
+    <!-- column_link — dark navy blue -->
+    <gazebo reference="column_link">
+        <material>Gazebo/Blue</material>
+        <mu1>0.5</mu1>
+        <mu2>0.5</mu2>
+    </gazebo>
+
+    <!-- shoulder_link — mid blue -->
+    <gazebo reference="shoulder_link">
+        <material>Gazebo/SkyBlue</material>
+        <mu1>0.5</mu1>
+        <mu2>0.5</mu2>
+    </gazebo>
+
+    <!-- forearm_link — dark blue again (alternating) -->
+    <gazebo reference="forearm_link">
+        <material>Gazebo/SkyBlue</material>
+        <mu1>0.5</mu1>
+        <mu2>0.5</mu2>
+    </gazebo>
+
+    <!-- wrist_link — light grey accent -->
+    <gazebo reference="wrist_link">
+        <material>Gazebo/Grey</material>
+        <mu1>0.5</mu1>
+        <mu2>0.5</mu2>
+    </gazebo>
+
+    <!-- left_finger_link — orange gripper -->
+    <gazebo reference="left_finger_link">
+        <material>Gazebo/Orange</material>
+        <mu1>1.2</mu1>
+        <mu2>1.2</mu2>
+    </gazebo>
+
+    <!-- right_finger_link — orange gripper -->
+    <gazebo reference="right_finger_link">
+        <material>Gazebo/Orange</material>
+        <mu1>1.2</mu1>
+        <mu2>1.2</mu2>
+    </gazebo>
+
+</robot>

@@ -1,26 +1,42 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="scara">
 
-  <!-- ROS 2 Humble -->
-  <gazebo>
-    <xacro:if value="$(arg is_ignition)">
-      <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
-        <parameters>$(find scara_controller)/config/scara_controllers.yaml</parameters>
-      </plugin>
-      <plugin filename="ignition-gazebo-sensors-system" name="ignition::gazebo::systems::Sensors">
-        <render_engine>ogre2</render_engine>
-      </plugin>
+    <!-- Declare args with defaults so xacro never errors if caller omits them -->
+    <xacro:arg name="is_sim"      default="true"/>
+    <xacro:arg name="is_ignition" default="false"/>
+
+    <xacro:if value="$(arg is_sim)">
+
+        <xacro:if value="$(arg is_ignition)">
+            <!-- ROS 2 Humble + Ignition Fortress -->
+            <gazebo>
+                <plugin filename="ign_ros2_control-system"
+                        name="ign_ros2_control::IgnitionROS2ControlPlugin">
+                    <parameters>$(find scara_controller)/config/scara_controllers.yaml</parameters>
+                </plugin>
+                <plugin filename="ignition-gazebo-sensors-system"
+                        name="ignition::gazebo::systems::Sensors">
+                    <render_engine>ogre2</render_engine>
+                </plugin>
+            </gazebo>
+        </xacro:if>
+
+        <xacro:unless value="$(arg is_ignition)">
+            <!-- ROS 2 Iron+ + Gazebo Garden/Harmonic -->
+            <gazebo>
+                <plugin filename="gz_ros2_control-system"
+                        name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+                    <parameters>$(find scara_controller)/config/scara_controllers.yaml</parameters>
+                </plugin>
+                <plugin filename="gz-sim-sensors-system"
+                        name="gz::sim::systems::Sensors">
+                    <render_engine>ogre2</render_engine>
+                </plugin>
+            </gazebo>
+        </xacro:unless>
+
     </xacro:if>
 
-    <!-- ROS 2 Iron or above -->
-    <xacro:unless value="$(arg is_ignition)">
-      <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
-        <parameters>$(find scara_controller)/config/scara_controllers.yaml</parameters>
-      </plugin>
-      <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
-        <render_engine>ogre2</render_engine>
-      </plugin>
-    </xacro:unless>
-  </gazebo>
+    <!-- No <gazebo> block needed when is_sim=false (display / slider GUI) -->
 
 </robot>

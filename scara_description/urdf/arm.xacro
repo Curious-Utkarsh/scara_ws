@@ -3,6 +3,7 @@
 
     <link name="world"/>
 
+    <!-- ── BASE ─────────────────────────────────────── -->
     <link name="base_link">
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -10,11 +11,8 @@
                 <mesh filename="package://scara_description/meshes/base_link.stl"
                       scale="0.001 0.001 0.001"/>
             </geometry>
-            <material name="grey">
-                <color rgba="0.8 0.8 0.8 1.0"/>
-            </material>
+            <material name="scara_mid_blue"/>
         </visual>
-
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
@@ -22,7 +20,6 @@
                       scale="0.001 0.001 0.001"/>
             </geometry>
         </collision>
-
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <mass value="5.0"/>
@@ -38,6 +35,7 @@
         <child link="base_link"/>
     </joint>
 
+    <!-- ── COLUMN ────────────────────────────────────── -->
     <link name="column_link">
         <visual>
             <origin xyz="-0.045 0 -0.089" rpy="0 0 0"/>
@@ -45,11 +43,8 @@
                 <mesh filename="package://scara_description/meshes/column_link.stl"
                       scale="0.001 0.001 0.001"/>
             </geometry>
-            <material name="grey">
-                <color rgba="0.8 0.8 0.8 1.0"/>
-            </material>
+            <material name="scara_mid_blue"/>
         </visual>
-
         <collision>
             <origin xyz="-0.045 0 -0.089" rpy="0 0 0"/>
             <geometry>
@@ -57,7 +52,6 @@
                       scale="0.001 0.001 0.001"/>
             </geometry>
         </collision>
-
         <inertial>
             <origin xyz="-0.045 0 -0.089" rpy="0 0 0"/>
             <mass value="4.0"/>
@@ -75,6 +69,7 @@
         <limit lower="-2.0" upper="2.0" effort="10.0" velocity="1.5"/>
     </joint>
 
+    <!-- ── SHOULDER ──────────────────────────────────── -->
     <link name="shoulder_link">
         <visual>
             <origin xyz="-0.045 0 -0.39" rpy="0 0 0"/>
@@ -82,11 +77,8 @@
                 <mesh filename="package://scara_description/meshes/shoulder_link.stl"
                       scale="0.001 0.001 0.001"/>
             </geometry>
-            <material name="grey">
-                <color rgba="0.8 0.8 0.8 1.0"/>
-            </material>
+            <material name="scara_mid_blue"/>
         </visual>
-
         <collision>
             <origin xyz="-0.045 0 -0.39" rpy="0 0 0"/>
             <geometry>
@@ -94,7 +86,6 @@
                       scale="0.001 0.001 0.001"/>
             </geometry>
         </collision>
-
         <inertial>
             <origin xyz="-0.045 0 -0.39" rpy="0 0 0"/>
             <mass value="3.0"/>
@@ -109,11 +100,10 @@
         <parent link="column_link"/>
         <child link="shoulder_link"/>
         <axis xyz="0 0 1"/>
-        <limit lower="-0.12" upper="0.02"
-               effort="100.0"
-               velocity="0.5"/>
+        <limit lower="-0.12" upper="0.02" effort="100.0" velocity="0.5"/>
     </joint>
 
+    <!-- ── FOREARM ───────────────────────────────────── -->
     <link name="forearm_link">
         <visual>
             <origin xyz="-0.273 0 -0.351" rpy="0 0 0"/>
@@ -121,11 +111,8 @@
                 <mesh filename="package://scara_description/meshes/forearm_link.stl"
                       scale="0.001 0.001 0.001"/>
             </geometry>
-            <material name="grey">
-                <color rgba="0.8 0.8 0.8 1.0"/>
-            </material>
+            <material name="scara_mid_blue"/>
         </visual>
-
         <collision>
             <origin xyz="-0.273 0 -0.351" rpy="0 0 0"/>
             <geometry>
@@ -133,7 +120,6 @@
                       scale="0.001 0.001 0.001"/>
             </geometry>
         </collision>
-
         <inertial>
             <origin xyz="-0.273 0 -0.351" rpy="0 0 0"/>
             <mass value="2.0"/>
@@ -148,11 +134,10 @@
         <parent link="shoulder_link"/>
         <child link="forearm_link"/>
         <axis xyz="0 0 1"/>
-        <limit lower="-2.0" upper="2.0"
-               effort="10.0"
-               velocity="1.5"/>
+        <limit lower="-2.0" upper="2.0" effort="10.0" velocity="1.5"/>
     </joint>
 
+    <!-- ── WRIST ─────────────────────────────────────── -->
     <link name="wrist_link">
         <visual>
             <origin xyz="-0.4095 0 -0.291" rpy="0 0 0"/>
@@ -160,11 +145,8 @@
                 <mesh filename="package://scara_description/meshes/wrist_link.stl"
                       scale="0.001 0.001 0.001"/>
             </geometry>
-            <material name="grey">
-                <color rgba="0.8 0.8 0.8 1.0"/>
-            </material>
+            <material name="scara_dark_blue"/>
         </visual>
-
         <collision>
             <origin xyz="-0.4095 0 -0.291" rpy="0 0 0"/>
             <geometry>
@@ -172,7 +154,6 @@
                       scale="0.001 0.001 0.001"/>
             </geometry>
         </collision>
-
         <inertial>
             <origin xyz="-0.4095 0 -0.291" rpy="0 0 0"/>
             <mass value="1.5"/>
@@ -187,11 +168,10 @@
         <parent link="forearm_link"/>
         <child link="wrist_link"/>
         <axis xyz="0 0 1"/>
-        <limit lower="-2.0" upper="2.0"
-               effort="10.0"
-               velocity="1.5"/>
+        <limit lower="-2.0" upper="2.0" effort="10.0" velocity="1.5"/>
     </joint>
 
+    <!-- ── LEFT FINGER ───────────────────────────────── -->
     <link name="left_finger_link">
         <visual>
             <origin xyz="-0.409 -0.0626 -0.2775" rpy="0 0 0"/>
@@ -199,11 +179,8 @@
                 <mesh filename="package://scara_description/meshes/left_finger_link.stl"
                       scale="0.001 0.001 0.001"/>
             </geometry>
-            <material name="grey">
-                <color rgba="0.8 0.8 0.8 1.0"/>
-            </material>
+            <material name="scara_light_grey"/>
         </visual>
-
         <collision>
             <origin xyz="-0.409 -0.0626 -0.2775" rpy="0 0 0"/>
             <geometry>
@@ -211,7 +188,6 @@
                       scale="0.001 0.001 0.001"/>
             </geometry>
         </collision>
-
         <inertial>
             <origin xyz="-0.409 -0.0626 -0.2775" rpy="0 0 0"/>
             <mass value="1.0"/>
@@ -227,11 +203,10 @@
         <parent link="wrist_link"/>
         <child link="left_finger_link"/>
         <axis xyz="0 1 0"/>
-        <limit lower="-0.02" upper="0.0"
-               effort="100.0"
-               velocity="0.5"/>
+        <limit lower="-0.02" upper="0.0" effort="100.0" velocity="0.5"/>
     </joint>
 
+    <!-- ── RIGHT FINGER ──────────────────────────────── -->
     <link name="right_finger_link">
         <visual>
             <origin xyz="-0.409 0.0626 -0.2775" rpy="0 0 0"/>
@@ -239,11 +214,8 @@
                 <mesh filename="package://scara_description/meshes/right_finger_link.stl"
                       scale="0.001 0.001 0.001"/>
             </geometry>
-            <material name="grey">
-                <color rgba="0.8 0.8 0.8 1.0"/>
-            </material>
+            <material name="scara_light_grey"/>
         </visual>
-
         <collision>
             <origin xyz="-0.409 0.0626 -0.2775" rpy="0 0 0"/>
             <geometry>
@@ -251,7 +223,6 @@
                       scale="0.001 0.001 0.001"/>
             </geometry>
         </collision>
-
         <inertial>
             <origin xyz="-0.409 0.0626 -0.2775" rpy="0 0 0"/>
             <mass value="1.0"/>
@@ -267,12 +238,8 @@
         <parent link="wrist_link"/>
         <child link="right_finger_link"/>
         <axis xyz="0 -1 0"/>
-        <limit lower="-0.02" upper="0.0"
-               effort="100.0"
-               velocity="0.5"/>
-        <mimic joint="left_finger_joint"
-               multiplier="1.0"
-               offset="0.0"/>
+        <limit lower="-0.02" upper="0.0" effort="100.0" velocity="0.5"/>
+        <mimic joint="left_finger_joint" multiplier="1.0" offset="0.0"/>
     </joint>
 
 </robot>
