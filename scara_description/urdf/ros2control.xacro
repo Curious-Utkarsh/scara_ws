@@ -3,28 +3,27 @@
 
     <xacro:property name="PI" value="3.14159265359"/>
 
-    <xacro:arg name="is_sim"       default="true"/>
-    <xacro:arg name="is_ignition"  default="false"/>
+    <xacro:arg name="is_sim"      default="true"/>
+    <xacro:arg name="is_ignition" default="false"/>
 
     <ros2_control name="RobotSystem" type="system">
 
-        <!-- ── No Gazebo: slider GUI / standalone testing ── -->
         <xacro:if value="$(arg is_sim)">
             <xacro:if value="$(arg is_ignition)">
-                <!-- ROS 2 Humble + Ignition Fortress -->
+                <!-- Ignition Fortress (ROS 2 Humble) -->
                 <hardware>
                     <plugin>ign_ros2_control/IgnitionSystem</plugin>
                 </hardware>
             </xacro:if>
             <xacro:unless value="$(arg is_ignition)">
-                <!-- ROS 2 Iron+ + Gazebo Garden/Harmonic -->
+                <!-- Gazebo Garden/Harmonic (ROS 2 Iron+) -->
                 <hardware>
                     <plugin>gz_ros2_control/GazeboSimSystem</plugin>
                 </hardware>
             </xacro:unless>
         </xacro:if>
 
-        <!-- ── No Gazebo: slider GUI / standalone testing ── -->
+        <!-- Standalone / slider GUI — no Gazebo -->
         <xacro:unless value="$(arg is_sim)">
             <hardware>
                 <plugin>mock_components/GenericSystem</plugin>
@@ -71,7 +70,7 @@
             <state_interface name="velocity"/>
         </joint>
 
-        <!-- Master Gripper Joint -->
+        <!-- Master Gripper — command interface here -->
         <joint name="left_finger_joint">
             <command_interface name="position">
                 <param name="min">-0.02</param>
@@ -81,7 +80,7 @@
             <state_interface name="velocity"/>
         </joint>
 
-        <!-- Mimic Joint (no command interface) -->
+        <!-- Mimic Joint — state only, no command interface -->
         <joint name="right_finger_joint">
             <param name="mimic">left_finger_joint</param>
             <param name="multiplier">1.0</param>

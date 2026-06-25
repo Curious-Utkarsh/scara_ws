@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import rclpy
 from rclpy.node import Node
+from builtin_interfaces.msg import Duration
 from sensor_msgs.msg import JointState
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 
@@ -14,28 +15,32 @@ class SliderControl(Node):
         self.get_logger().info("Slider Control Node started")
 
     def sliderCallback(self, msg):
-        arm_controller = JointTrajectory()
-        gripper_controller = JointTrajectory()
+        arm_msg = JointTrajectory()
+        gripper_msg = JointTrajectory()
 
-        arm_controller.joint_names = [
+        arm_msg.joint_names = [
             "column_joint",
             "shoulder_joint",
             "forearm_joint",
             "wrist_joint",
         ]
-        gripper_controller.joint_names = ["left_finger_joint"]
+        gripper_msg.joint_names = ["left_finger_joint"]
 
         arm_goal = JointTrajectoryPoint()
         gripper_goal = JointTrajectoryPoint()
 
-        arm_goal.positions = msg.position[:4]
+        arm_goal.positions = list(msg.position[:4])
         gripper_goal.positions = [msg.position[4]]
 
-        arm_controller.points.append(arm_goal)
-        gripper_controller.points.append(gripper_goal)
+        # Required: controller rejects points with zero time_from_start
+        arm_goal.time_from_start = Duration(sec=1, nanosec=0)
+        gripper_goal.time_from_start = Duration(sec=1, nanosec=0)
 
-        self.arm_pub_.publish(arm_controller)
-        self.gripper_pub_.publish(gripper_controller)
+        arm_msg.points.append(arm_goal)
+        gripper_msg.points.append(gripper_goal)
+
+        self.arm_pub_.publish(arm_msg)
+        self.gripper_pub_.publish(gripper_msg)
 
 
 def main():

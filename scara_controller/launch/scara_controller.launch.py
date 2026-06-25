@@ -13,12 +13,11 @@ def generate_launch_description():
 
     is_sim_arg = DeclareLaunchArgument(
         "is_sim",
-        default_value="True"
+        default_value="False"       # False = mock_components (slider GUI)
     )
     is_ignition_arg = DeclareLaunchArgument(
         "is_ignition",
-        default_value="False"   # False → mock_components (slider GUI / no Gazebo)
-                                # True  → ign_ros2_control  (Ignition Fortress)
+        default_value="False"       # True only when launching inside Ignition Fortress
     )
 
     robot_description = ParameterValue(

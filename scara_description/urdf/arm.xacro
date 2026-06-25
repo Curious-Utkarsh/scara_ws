@@ -109,7 +109,7 @@
         <parent link="column_link"/>
         <child link="shoulder_link"/>
         <axis xyz="0 0 1"/>
-        <limit lower="-0.15" upper="0.0"
+        <limit lower="-0.12" upper="0.02"
                effort="100.0"
                velocity="0.5"/>
     </joint>

@@ -19,6 +19,7 @@ arm_controller:
       - position
     state_interfaces:
       - position
+      - velocity
     open_loop_control: true
     allow_integration_in_goal_trajectories: true
 
@@ -26,10 +27,10 @@ gripper_controller:
   ros__parameters:
     joints:
       - left_finger_joint
-      - right_finger_joint
     command_interfaces:
       - position
     state_interfaces:
       - position
+      - velocity
     open_loop_control: true
     allow_integration_in_goal_trajectories: true
