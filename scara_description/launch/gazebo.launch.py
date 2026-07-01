@@ -22,7 +22,7 @@ def generate_launch_description():
         description="Absolute path to robot urdf file"
     )
 
-    world_name_arg = DeclareLaunchArgument(name="world_name", default_value="empty")
+    world_name_arg = DeclareLaunchArgument(name="world_name", default_value="custom_world")
 
     world_path = PathJoinSubstitution([
             scara_description,
@@ -75,8 +75,8 @@ def generate_launch_description():
             "-topic", "robot_description",
             "-name", "scara",
             "-x", "0.0",  
-            "-y", "0.0",  
-            "-z", "0.0",  
+            "-y", "-0.65",  
+            "-z", "0.37",  
             "-R", "0.0", 
             "-P", "0.0",
             "-Y", "0.0", # Yaw (in radians, e.g., 1.57 for 90 degrees)
