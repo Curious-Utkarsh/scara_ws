@@ -128,6 +128,8 @@ class HandGestureControl(Node):
 
         # ---- camera + MediaPipe --------------------------------------------
         self.cap = cv2.VideoCapture(self.camera_index)
+        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
         if not self.cap.isOpened():
             self.get_logger().error(f"Could not open camera index {self.camera_index}")
 
@@ -201,7 +203,10 @@ class HandGestureControl(Node):
 
         if self.show_debug_window:
             self._draw_debug_overlay(frame)
-            cv2.imshow("SCARA hand control", frame)
+            scale = 1.8
+            display = cv2.resize(frame, None, fx=scale, fy=scale)
+            cv2.imshow("SCARA hand control", display)
+            # cv2.imshow("SCARA hand control", frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 self.get_logger().info("'q' pressed, shutting down hand control node")
                 rclpy.shutdown()

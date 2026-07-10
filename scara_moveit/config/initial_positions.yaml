@@ -1,0 +1,8 @@
+# Default initial positions for scara's ros2_control fake system
+
+initial_positions:
+  column_joint: 0
+  forearm_joint: 0
+  left_finger_joint: 0
+  shoulder_joint: 0
+  wrist_joint: 0
