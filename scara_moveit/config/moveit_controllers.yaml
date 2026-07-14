@@ -1,5 +1,3 @@
-# MoveIt uses this configuration for controller management
-
 moveit_controller_manager: moveit_simple_controller_manager/MoveItSimpleControllerManager
 
 moveit_simple_controller_manager:
@@ -9,12 +7,17 @@ moveit_simple_controller_manager:
 
   arm_controller:
     type: FollowJointTrajectory
+    action_ns: follow_joint_trajectory #vimp line, not given by moveit_setup_assistant
+    default: true
     joints:
       - column_joint
       - shoulder_joint
       - forearm_joint
       - wrist_joint
+
   gripper_controller:
     type: FollowJointTrajectory
+    action_ns: follow_joint_trajectory #vimp line, not given by moveit_setup_assistant
+    default: true
     joints:
       - left_finger_joint
