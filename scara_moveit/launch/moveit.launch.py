@@ -39,6 +39,7 @@ def generate_launch_description():
         )
         .robot_description_semantic(file_path="config/scara.srdf")
         .trajectory_execution(file_path="config/moveit_controllers.yaml")
+        .planning_pipelines(pipelines=["ompl"])
         .to_moveit_configs()
     )
 

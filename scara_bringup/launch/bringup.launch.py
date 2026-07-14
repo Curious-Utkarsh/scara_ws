@@ -58,7 +58,7 @@ def generate_launch_description():
 
     return LaunchDescription([
         gazebo,
-        # controller,
-        slider_controller,
-        # moveit,
+        controller,
+        # slider_controller,
+        moveit,
     ])
