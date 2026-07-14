@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'scara_scripts'
+package_name = 'scara_vision'
 
 setup(
     name=package_name,
@@ -24,7 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'hand_controller = scara_scripts.hand_controller:main',
+            'hand_gesture_control = scara_vision.hand_gesture_control:main',
         ],
     },
 )

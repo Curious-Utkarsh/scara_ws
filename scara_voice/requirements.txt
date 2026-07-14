@@ -1,0 +1,8 @@
+openai-whisper
+sounddevice
+scipy
+google-generativeai
+elevenlabs
+numpy
+
+# pip install -r requirements.txt

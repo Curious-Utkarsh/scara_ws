@@ -10,7 +10,7 @@ def generate_launch_description():
         os.path.join(
             get_package_share_directory("scara_controller"),
             "launch",
-            "scara_controller.launch.py"
+            "controller.launch.py"
         ),
         launch_arguments={"is_sim": "True"}.items()
     )

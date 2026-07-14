@@ -25,7 +25,19 @@ def generate_launch_description():
             os.path.join(
                 get_package_share_directory("scara_controller"),
                 "launch",
-                "scara_controller.launch.py"
+                "controller.launch.py"
+            )
+        ),
+        launch_arguments={"is_sim": "True"}.items()
+    )
+
+    # ------------------- Slider_Controllers -------------------
+    slider_controller = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("scara_controller"),
+                "launch",
+                "slider_controller.launch.py"
             )
         ),
         launch_arguments={"is_sim": "True"}.items()
@@ -46,6 +58,7 @@ def generate_launch_description():
 
     return LaunchDescription([
         gazebo,
-        controller,
+        # controller,
+        slider_controller,
         # moveit,
     ])
