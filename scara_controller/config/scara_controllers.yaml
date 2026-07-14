@@ -34,3 +34,17 @@ gripper_controller:
       - velocity
     open_loop_control: true
     allow_integration_in_goal_trajectories: true
+
+# Publish only joints that are variables in the MoveIt robot model.  The
+# right_finger_joint_mimic dummy is fixed and must not be sent in /joint_states.
+joint_state_broadcaster:
+  ros__parameters:
+    joints:
+      - column_joint
+      - shoulder_joint
+      - forearm_joint
+      - wrist_joint
+      - left_finger_joint
+    interfaces:
+      - position
+      - velocity
