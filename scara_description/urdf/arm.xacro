@@ -243,10 +243,10 @@
     </joint>
 
     <!-- DUMMY JOINT FOR MOVEIT2-->
+    <link name="right_finger_joint_mimic_dummy"/>
     <joint name="right_finger_joint_mimic" type="fixed">
         <parent link="world"/>
         <child link="right_finger_joint_mimic_dummy"/>
     </joint>
-    <link name="right_finger_joint_mimic_dummy"/>
-
+    
 </robot>
