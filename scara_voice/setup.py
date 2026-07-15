@@ -24,6 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
+            'voice_llm_node = scara_voice.voice_llm_node:main',
         ],
     },
 )

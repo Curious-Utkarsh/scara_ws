@@ -10,6 +10,7 @@
 *.userosscache
 *.sln.docstates
 *.env
+scara_voice/api.txt
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

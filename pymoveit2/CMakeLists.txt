@@ -23,6 +23,7 @@ install(PROGRAMS
     ${EXAMPLES_DIR}/ex_pose_goal.py
     ${EXAMPLES_DIR}/ex_servo.py
     ${EXAMPLES_DIR}/pick_and_place.py
+    ${EXAMPLES_DIR}/pick_and_drop.py
     DESTINATION lib/${PROJECT_NAME}
 )
 
