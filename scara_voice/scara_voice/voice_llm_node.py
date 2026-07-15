@@ -41,9 +41,16 @@ class VoiceLLMNode(Node):
 
     def read_api_keys(self):
         """Read KEY=value lines from scara_voice/api.txt if it exists."""
-        api_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "api.txt")
         keys = {}
-        if not os.path.exists(api_path):
+        api_paths = [
+            # Running directly from the source package.
+            os.path.join(os.path.dirname(os.path.dirname(__file__)), "api.txt"),
+            # Running with `ros2 run` from the workspace root.
+            os.path.join(os.getcwd(), "src", "scara_voice", "api.txt"),
+            os.path.join(os.getcwd(), "scara_voice", "api.txt"),
+        ]
+        api_path = next((path for path in api_paths if os.path.exists(path)), None)
+        if api_path is None:
             return keys
 
         with open(api_path, "r", encoding="utf-8") as api_file:
@@ -67,37 +74,70 @@ class VoiceLLMNode(Node):
         sd.wait()
         write(wav_path, sample_rate, audio)
 
-        text = self.model.transcribe(wav_path)["text"].strip()
+        text = self.model.transcribe(
+            wav_path,
+            initial_prompt=(
+                "The wake word is Hey Scara. Commands are pick green box, "
+                "pick blue box, and pick red box."
+            ),
+        )["text"].strip()
         self.get_logger().info("Heard: %s" % text)
         return text.lower()
 
+    def heard_wake_word(self, text):
+        """Accept Whisper's common spellings of the name Scara."""
+        clean_text = "".join(
+            character if character.isalnum() else " " for character in text
+        )
+        words = clean_text.split()
+        return "hey" in words and any(
+            name in words
+            for name in ("scara", "skara", "sacara", "sakar", "sacar")
+        )
+
     def get_color_command(self, text):
+        # These are the normal robot commands, so do not require an API call.
+        # This keeps the robot working if the Gemini quota is exhausted.
+        if "green" in text:
+            return "G"
+        if "blue" in text:
+            return "B"
+        if "red" in text:
+            return "R"
+
         prompt = (
             "Reply with only G, B, R, or UNKNOWN. "
             "G means pick green box, B means pick blue box, and R means pick red box. "
             "Reply UNKNOWN unless the user asks to pick one of these boxes. "
             "User said: " + text
         )
-        answer = self.gemini.generate_content(prompt).text.strip().upper()
-        if answer in ("G", "B", "R"):
-            return answer
+        try:
+            answer = self.gemini.generate_content(prompt).text.strip().upper()
+            if answer in ("G", "B", "R"):
+                return answer
+        except Exception as error:
+            self.get_logger().warning("Gemini command parsing failed: %s" % error)
         return None
 
     def speak(self, text):
         self.get_logger().info("SCARA: %s" % text)
-        audio = self.eleven_client.text_to_speech.convert(
-            text=text,
-            voice_id=self.voice_id,
-            model_id="eleven_multilingual_v2",
-            output_format="mp3_44100_128",
-        )
-        play(audio)
+        try:
+            audio = self.eleven_client.text_to_speech.convert(
+                text=text,
+                voice_id=self.voice_id,
+                model_id="eleven_multilingual_v2",
+                output_format="mp3_44100_128",
+            )
+            play(audio)
+        except Exception as error:
+            # Speech is optional: keep listening and execute the robot command.
+            self.get_logger().warning("ElevenLabs speech failed: %s" % error)
 
     def run(self):
         while rclpy.ok():
             # First say only: "hey scara".
             wake_text = self.get_voice_input()
-            if "hey scara" not in wake_text and "hey_scara" not in wake_text:
+            if not self.heard_wake_word(wake_text):
                 continue
 
             self.speak("Yes, what would you like me to pick up?")
