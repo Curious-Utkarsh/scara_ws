@@ -15,7 +15,15 @@ from pymoveit2.robots import scara
 # Joint order: column_joint, shoulder_joint, forearm_joint, wrist_joint.
 # Add the calibrated Red and Blue sequences here when those locations are known.
 TARGETS = {
-    "R": {},
+    "R": {
+        "home": [0.0, 0.0, 0.0, 0.0],
+        "pick_approach": [0.0, -0.15, 0.0, 0.0],
+        "pick_grasp": [0.0, -0.15, 0.0, 0.0],
+        "pick_lift": [0.0, 0.0, 0.0, 0.0],
+        "drop_approach": [-1.611, 0.0, -2.00, 0.0],
+        "drop_release": [-1.611, 0.0, -2.00, 0.0],
+        "drop_home": [0.0, 0.0, 0.0, 0.0],
+    },
     "G": {
         "home": [0.0, 0.0, 0.0, 0.0],
         "pick_approach": [-1.438, 0.0, 2.00, -0.184],
@@ -25,7 +33,15 @@ TARGETS = {
         "drop_release": [-1.611, 0.0, 0.0, 0.0],
         "drop_home": [0.0, 0.0, 0.0, 0.0],
     },
-    "B": {},
+    "B": {
+        "home": [0.0, 0.0, 0.0, 0.0],
+        "pick_approach": [1.438, 0.0, -2.00, 0.184],
+        "pick_grasp": [1.438, -0.15, -2.00, 0.184],
+        "pick_lift": [1.438, 0.0, -2.00, 0.184],
+        "drop_approach": [1.611, 0.0, -2.00, 0.184],
+        "drop_release": [1.611, 0.0, 0.0, 0.0],
+        "drop_home": [0.0, 0.0, 0.0, 0.0],
+    },
 }
 
 

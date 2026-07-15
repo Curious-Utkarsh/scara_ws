@@ -22,7 +22,7 @@ def generate_launch_description():
         description="Absolute path to robot urdf file"
     )
 
-    world_name_arg = DeclareLaunchArgument(name="world_name", default_value="custom_world")
+    world_name_arg = DeclareLaunchArgument(name="world_name", default_value="pick_and_place")
 
     world_path = PathJoinSubstitution([
             scara_description,
