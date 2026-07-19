@@ -32,7 +32,7 @@ class VoiceLLMNode(Node):
             )
 
         self.get_logger().info("Loading Whisper model...")
-        self.model = whisper.load_model("base")
+        self.model = whisper.load_model("base", device="cpu")
 
         genai.configure(api_key=gemini_key)
         self.gemini = genai.GenerativeModel("gemini-2.0-flash")

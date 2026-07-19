@@ -42,4 +42,14 @@
     <disable_collisions link1="wrist_link" link2="right_finger_link" reason="Adjacent"/>
     <disable_collisions link1="left_finger_link" link2="right_finger_link" reason="Default"/>
 
+    <!-- The camera is a fixed sensor mounted on the base.  Its housing
+         should not make the arm appear self-colliding while planning. -->
+    <disable_collisions link1="base_link" link2="camera_link" reason="Adjacent"/>
+    <disable_collisions link1="camera_link" link2="column_link" reason="Never"/>
+    <disable_collisions link1="camera_link" link2="shoulder_link" reason="Never"/>
+    <disable_collisions link1="camera_link" link2="forearm_link" reason="Never"/>
+    <disable_collisions link1="camera_link" link2="wrist_link" reason="Never"/>
+    <disable_collisions link1="camera_link" link2="left_finger_link" reason="Never"/>
+    <disable_collisions link1="camera_link" link2="right_finger_link" reason="Never"/>
+
 </robot>
