@@ -25,6 +25,7 @@ setup(
     entry_points={
         'console_scripts': [
             'hand_gesture_control = scara_vision.hand_gesture_control:main',
+            'color_box_detector = scara_vision.color_box_detector:main',
         ],
     },
 )

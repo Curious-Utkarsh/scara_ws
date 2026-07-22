@@ -47,6 +47,7 @@ def generate_launch_description():
         executable="rviz2",
         name="rviz2",
         output="screen",
+        parameters=[{"use_sim_time": True}],
         arguments=["-d", os.path.join(scara_description_dir, "rviz", "display.rviz")],
     )
 

@@ -86,4 +86,29 @@
     </sensor>
     </gazebo>
 
+    <gazebo reference="camera_fixed_link">
+    <sensor name="camera_fixed" type="rgbd_camera">
+        <pose>0 0 0 0 0 0</pose>
+        <visualize>true</visualize>
+        <update_rate>10.0</update_rate>
+        <always_on>true</always_on>
+        <topic>camera_fixed</topic>
+        <gz_frame_id>camera_fixed_link_optical</gz_frame_id>
+
+        <camera name="intel_realsense_r200">
+        <camera_info_topic>camera_fixed/camera_info</camera_info_topic>
+        <horizontal_fov>1.3962634</horizontal_fov>
+        <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+        </image>
+        <clip>
+            <near>0.05</near>
+            <far>8.0</far>
+        </clip>
+        </camera>
+    </sensor>
+    </gazebo>
+
 </robot>

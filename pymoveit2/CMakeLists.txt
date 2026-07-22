@@ -24,6 +24,7 @@ install(PROGRAMS
     ${EXAMPLES_DIR}/ex_servo.py
     ${EXAMPLES_DIR}/pick_and_place.py
     ${EXAMPLES_DIR}/pick_and_drop.py
+    ${EXAMPLES_DIR}/vision_pick_and_place.py
     DESTINATION lib/${PROJECT_NAME}
 )
 
