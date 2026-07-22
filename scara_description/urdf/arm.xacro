@@ -171,6 +171,14 @@
         <limit lower="-2.0" upper="2.0" effort="10.0" velocity="1.5"/>
     </joint>
 
+    <!-- Tool centre point: centre of the gripper finger tips. -->
+    <link name="tool0"/>
+    <joint name="tool0_joint" type="fixed">
+        <parent link="wrist_link"/>
+        <child link="tool0"/>
+        <origin xyz="0.08 0 -0.10" rpy="0 0 0"/>
+    </joint>
+
     <!-- ── LEFT FINGER ───────────────────────────────── -->
     <link name="left_finger_link">
         <visual>

@@ -1,6 +1,7 @@
 import os
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
+from launch.conditions import UnlessCondition
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
 from launch.substitutions import Command, LaunchConfiguration
@@ -36,6 +37,12 @@ def generate_launch_description():
         value_type=str,
     )
 
+    # In sim, Gazebo's own gz_ros2_control/ign_ros2_control system plugin (loaded via
+    # scara_description/urdf/gazebo.xacro) already hosts robot_state_publisher and the
+    # controller_manager -- a second copy here would just fight over the same names, and
+    # its ros2_control_node crashes on startup because GazeboSimSystem/IgnitionSystem
+    # aren't loadable outside of Gazebo's own process. Only the spawners are needed to
+    # activate controllers on whichever controller_manager is actually running.
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
@@ -43,6 +50,7 @@ def generate_launch_description():
             "robot_description": robot_description,
             "use_sim_time": is_sim,
         }],
+        condition=UnlessCondition(is_sim),
     )
 
     controller_manager = Node(
@@ -59,6 +67,7 @@ def generate_launch_description():
                 "scara_controllers.yaml",
             ),
         ],
+        condition=UnlessCondition(is_sim),
     )
 
     joint_state_broadcaster_spawner = Node(
