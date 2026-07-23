@@ -7,6 +7,7 @@ import rclpy
 from cv_bridge import CvBridge
 from geometry_msgs.msg import PointStamped
 from rclpy.node import Node
+from rclpy.qos import DurabilityPolicy, QoSProfile, ReliabilityPolicy
 from sensor_msgs.msg import Image
 from std_msgs.msg import String
 
@@ -17,6 +18,14 @@ COLOURS = {
     "g": [((40, 70, 50), (85, 255, 255))],
     "b": [((100, 100, 50), (130, 255, 255))],
 }
+
+# Transient-local + depth 1: latches the colour command so vision_pick_and_place
+# gets it on subscribe even if this node published before that one started.
+PICK_COMMAND_QOS = QoSProfile(
+    reliability=ReliabilityPolicy.RELIABLE,
+    durability=DurabilityPolicy.TRANSIENT_LOCAL,
+    depth=1,
+)
 
 
 class FixedCameraColorDetector(Node):
@@ -34,12 +43,19 @@ class FixedCameraColorDetector(Node):
         self.publisher = self.create_publisher(
             PointStamped, "/scara/pick_target_pixel", 10
         )
+        # Tells vision_pick_and_place which colour to pick, so it needs no
+        # parameter of its own. Latched (transient local) so it's still there
+        # for that node even if it subscribes after this message is sent.
+        self.command_publisher = self.create_publisher(
+            String, "/scara/pick_command", PICK_COMMAND_QOS
+        )
         self.create_subscription(Image, "/camera_fixed/image", self.image_callback, 10)
         self.create_subscription(Image, "/camera_fixed/depth_image", self.depth_callback, 10)
-        self.create_subscription(String, "/scara/pick_command", self.command_callback, 10)
+        self.create_subscription(String, "/scara/pick_command", self.command_callback, PICK_COMMAND_QOS)
         cv2.namedWindow("Fixed Camera Box Detector", cv2.WINDOW_NORMAL)
         cv2.resizeWindow("Fixed Camera Box Detector", 1280, 960)
         self.get_logger().info(f"Looking for {self.pick} box")
+        self.command_publisher.publish(String(data=self.pick.upper()))
 
     def command_callback(self, msg):
         color = msg.data.strip().lower()[:1]

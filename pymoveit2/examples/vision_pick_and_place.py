@@ -9,6 +9,7 @@ from cv_bridge import CvBridge
 from geometry_msgs.msg import PointStamped
 from rclpy.callback_groups import ReentrantCallbackGroup
 from rclpy.node import Node
+from rclpy.qos import DurabilityPolicy, QoSProfile, ReliabilityPolicy
 from rclpy.time import Time
 from sensor_msgs.msg import Image
 from std_msgs.msg import String
@@ -21,6 +22,14 @@ from pymoveit2.robots import scara
 
 # These are the values used by camera_fixed in scara_description/urdf/gazebo.xacro.
 HORIZONTAL_FOV = 1.3962634
+
+# Transient-local + depth 1: the last colour command is latched, so this node
+# gets it on subscribe even if fixed_camera_color_detector published first.
+PICK_COMMAND_QOS = QoSProfile(
+    reliability=ReliabilityPolicy.RELIABLE,
+    durability=DurabilityPolicy.TRANSIENT_LOCAL,
+    depth=1,
+)
 
 # shoulder_joint's lower limit (scara_description/urdf/ros2control.xacro): fully lowered.
 GRASP_SHOULDER_POSITION = -0.15
@@ -88,19 +97,21 @@ class VisionPickAndPlace(Node):
         self.tf_listener = TransformListener(self.tf_buffer, self)
         self.create_subscription(Image, "/camera_fixed/depth_image", self.depth_callback, 10)
         self.create_subscription(PointStamped, "/scara/pick_target_pixel", self.target_callback, 10)
-        self.create_subscription(String, "/scara/pick_command", self.command_callback, 10)
-        self.get_logger().info("Waiting for a colour command (R/G/B) on /scara/pick_command.")
+        # Transient-local so the detector's latched colour is received even if it
+        # published before this node subscribed (start order shouldn't matter).
+        self.create_subscription(
+            String, "/scara/pick_command", self.command_callback, PICK_COMMAND_QOS
+        )
+        self.get_logger().info("Waiting for a colour command on /scara/pick_command.")
 
     def command_callback(self, msg):
         color = msg.data.strip().upper()
         if color not in DROP_TARGETS:
             self.get_logger().warning(f"Ignoring command '{msg.data}'; expected R, G, or B.")
             return
-        if self.busy or self.target_color is not None:
-            self.get_logger().warning(f"Still busy; ignoring '{color}' command.")
-            return
-        self.target_color = color
-        self.get_logger().info(f"Waiting to see the {color} box.")
+        if self.target_color != color:
+            self.target_color = color
+            self.get_logger().info(f"Now looking for the {color} box.")
 
     def depth_callback(self, msg):
         self.depth_image = self.bridge.imgmsg_to_cv2(msg, "passthrough")
@@ -226,7 +237,6 @@ class VisionPickAndPlace(Node):
             self.get_logger().error(f"Pick failed: {error}")
         finally:
             self.busy = False
-            self.target_color = None
 
 
 def main():
